@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagat Electricals | Enterprise Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --dark-bg: #0f172a; --card-bg: #1e293b; 
+            --neon-green: #22c55e; --electric-blue: #3b82f6; 
+            --text-main: #f8fafc; --text-dim: #94a3b8;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; margin: 0; 
+            background: var(--dark-bg); color: var(--text-main); 
+            padding-bottom: 90px; overflow-x: hidden; 
+        }
+
+        /* High-Tech Header */
+        header { 
+            background: linear-gradient(135deg, #000 0%, var(--dark-bg) 100%); 
+            padding: 30px 20px; text-align: center; 
+            border-bottom: 2px solid var(--electric-blue);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        header h1 { 
+            font-family: 'Orbitron', sans-serif; font-size: 20px; margin: 0; 
+            letter-spacing: 2px; color: var(--electric-blue);
+        }
+
+        /* Glassmorphism Navigation */
+        .nav-bar { 
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 90%; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; padding: 15px 0; 
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); z-index: 1000; 
+        }
+        .nav-item { text-align: center; color: var(--text-dim); cursor: pointer; flex:1; position: relative; }
+        .nav-item.active { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 5px; }
+        
+        .badge { 
+            position: absolute; top: -8px; right: 20%; background: var(--neon-green); 
+            color: black; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: bold;
+        }
+
+        /* Input Styling - Perfectly Aligned */
+        .input-box {
+            background: var(--card-bg); border: 1px solid #334155;
+            color: white; padding: 14px; border-radius: 12px; width: 100%;
+            box-sizing: border-box; margin-bottom: 15px; font-size: 15px;
+            outline: none; transition: 0.3s;
+        }
+        .input-box:focus { border-color: var(--electric-blue); box-shadow: 0 0 8px rgba(59,130,246,0.4); }
+
+        /* Product Grid */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+        .card { 
+            background: var(--card-bg); border-radius: 16px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+        }
+        .card img { width: 100%; height: 130px; object-fit: cover; filter: brightness(0.9); }
+        .card-body { padding: 12px; }
+        .card-title { font-weight: 600; font-size: 14px; margin-bottom: 5px; height: 34px; overflow: hidden; }
+        .card-price { color: var(--neon-green); font-weight: 700; font-size: 16px; }
+
+        .btn-action { 
+            width: 100%; border: none; padding: 12px; border-radius: 10px; 
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-buy { background: var(--electric-blue); color: white; margin-top: 10px; }
+        .btn-gen { background: var(--neon-green); color: black; font-size: 16px; margin-top: 20px; }
+
+        /* Categories */
+        .cat-bar { display: flex; gap: 10px; overflow-x: auto; padding: 15px; scrollbar-width: none; }
+        .cat-tag { 
+            background: #334155; padding: 8px 18px; border-radius: 30px; 
+            white-space: nowrap; font-size: 13px; cursor: pointer; border: 1px solid transparent;
+        }
+        .cat-tag.active { border-color: var(--neon-green); color: var(--neon-green); background: rgba(34, 197, 94, 0.1); }
+
+        .section { display: none; padding: 10px; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        #qrcode-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BHAGAT ELECTRICALS</h1>
+    <p style="color: var(--text-dim); font-size: 11px; margin: 5px 0 0 0;">Industrial Grade Electrical Solutions</p>
+</header>
+
+<div class="container">
+    <div id="shop-sec" class="section" style="display: block;">
+        <div class="cat-bar">
+            <div class="cat-tag active" onclick="filterCat('All', this)">All Materials</div>
+            <div class="cat-tag" onclick="filterCat('Plumbing', this)">Plumbing</div>
+            <div class="cat-tag" onclick="filterCat('Electric', this)">Electric</div>
+            <div class="cat-tag" onclick="filterCat('Surface', this)">Surface</div>
+            <div class="cat-tag" onclick="filterCat('Underground', this)">Underground</div>
+        </div>
+        <div class="grid" id="product-display"></div>
+    </div>
+
+    <div id="cart-sec" class="section">
+        <h2 style="color: var(--electric-blue); padding-left: 10px;">Billing Portal</h2>
+        <div style="padding: 10px;">
+            <input type="text" id="custName" class="input-box" placeholder="Customer Name / Business Name">
+            <div id="cart-list"></div>
+            <div style="display: flex; justify-content: space-between; padding: 20px 10px; background: #1e293b; border-radius: 12px; margin-top: 10px;">
+                <span style="font-weight: bold;">Total Valuation</span>
+                <span style="color: var(--neon-green); font-size: 20px; font-weight: 800;">₹<span id="cart-total">0</span></span>
+            </div>
+            <button class="btn-action btn-gen" onclick="generateInvoice()">
+                <i class="fa fa-file-invoice-dollar"></i> GENERATE FINAL BILL
+            </button>
+        </div>
+    </div>
+
+    <div id="history-sec" class="section">
+        <h2 style="padding-left: 10px;">Cloud Records</h2>
+        <div id="bill-history" style="padding: 10px;"></div>
+    </div>
+
+    <div id="admin-sec" class="section">
+        <h2 style="padding-left: 10px;">Inventory Control</h2>
+        <div style="padding: 10px;">
+            <input type="text" id="pName" class="input-box" placeholder="Product Title">
+            <input type="number" id="pPrice" class="input-box" placeholder="Unit Price (₹)">
+            <select id="pCat" class="input-box">
+                <option value="Electric">Electric</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Surface">Surface</option>
+                <option value="Underground">Underground</option>
+            </select>
+            <input type="text" id="pImg" class="input-box" placeholder="Image URL (Optional)">
+            <button class="btn-action btn-buy" style="background: var(--neon-green); color: black;" onclick="addProduct()">SAVE TO INVENTORY</button>
+            
+            <div id="admin-list" style="margin-top: 30px; border-top: 1px solid #334155; padding-top: 20px;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="qrcode-hidden"></div>
+
+<nav class="nav-bar">
+    <div class="nav-item active" onclick="nav('shop-sec', this)"><i class="fa fa-layer-group"></i>Shop</div>
+    <div class="nav-item" onclick="nav('cart-sec', this)">
+        <span class="badge" id="cart-count" style="display:none;">0</span>
+        <i class="fa fa-shopping-cart"></i>Cart
+    </div>
+    <div class="nav-item" onclick="nav('history-sec', this)"><i class="fa fa-database"></i>History</div>
+    <div class="nav-item" onclick="nav('admin-sec', this)"><i class="fa fa-shield-halved"></i>Admin</div>
+</nav>
+
+<script>
+    let products = JSON.parse(localStorage.getItem('bhagat_db_v4')) || [];
+    let cart = [];
+    let bills = JSON.parse(localStorage.getItem('bhagat_bills_v4')) || [];
+    const siteUrl = "https://voltcare-solutions-s81x.bolt.host/#contact";
+
+    new QRCode(document.getElementById("qrcode-hidden"), { text: siteUrl, width: 128, height: 128 });
+
+    function nav(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+        if(id === 'shop-sec') renderProducts();
+        if(id === 'cart-sec') renderCart();
+        if(id === 'history-sec') renderHistory();
+        if(id === 'admin-sec') renderAdminList();
+    }
+
+    function addProduct() {
+        const name = document.getElementById('pName').value;
+        const price = document.getElementById('pPrice').value;
+        const cat = document.getElementById('pCat').value;
+        const img = document.getElementById('pImg').value || 'https://via.placeholder.com/200?text=Item';
+        
+        if(!name || !price) return alert("All fields are mandatory");
+        products.push({ id: Date.now(), name, price: parseFloat(price), cat, img });
+        localStorage.setItem('bhagat_db_v4', JSON.stringify(products));
+        alert("Inventory Updated!");
+        renderAdminList();
+    }
+
+    function renderProducts(filter = 'All') {
+        const grid = document.getElementById('product-display');
+        grid.innerHTML = '';
+        const data = filter === 'All' ? products : products.filter(p => p.cat === filter);
+        data.forEach(p => {
+            grid.innerHTML += `
+                <div class="card">
+                    <img src="${p.img}">
+                    <div class="card-body">
+                        <div class="card-title">${p.name}</div>
+                        <div class="card-price">₹${p.price}</div>
+                        <button class="btn-action btn-buy" onclick="addToCart(${p.id})">ADD</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function filterCat(cat, el) {
+        document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        renderProducts(cat);
+    }
+
+    function addToCart(id) {
+        const p = products.find(x => x.id === id);
+        const item = cart.find(x => x.id === id);
+        if(item) item.qty++; else cart.push({...p, qty: 1});
+        updateCartBadge();
+    }
+
+    function updateCartBadge() {
+        const b = document.getElementById('cart-count');
+        const total = cart.reduce((s, i) => s + i.qty, 0);
+        if(total > 0) { b.innerText = total; b.style.display = 'block'; }
+        else b.style.display = 'none';
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cart-list');
+        list.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price * item.qty;
+            list.innerHTML += `
+                <div style="background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                    <div><b>${item.name}</b><br><small>₹${item.price}</small></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button onclick="changeQty(${item.id}, -1)" style="border:none; border-radius:50%; width:25px;">-</button>
+                        <span>${item.qty}</span>
+                        <button onclick="changeQty(${item.id}, 1)" style="border:none; border-radius:50%; width:25px;">+</button>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('cart-total').innerText = total;
+    }
+
+    function changeQty(id, delta) {
+        const i = cart.find(x => x.id === id);
+        i.qty += delta;
+        if(i.qty <= 0) cart = cart.filter(x => x.id !== id);
+        renderCart(); updateCartBadge();
+    }
+
+    function generateInvoice() {
+        const name = document.getElementById('custName').value;
+        if(!name || cart.length === 0) return alert("Add Customer Name & Items");
+
+        const bill = {
+            id: "BE-IN-" + Date.now().toString().slice(-5),
+            customer: name,
+            items: [...cart],
+            total: cart.reduce((s, i) => s + (i.price * i.qty), 0),
+            date: new Date().toLocaleString()
+        };
+
+        bills.unshift(bill);
+        localStorage.setItem('bhagat_bills_v4', JSON.stringify(bills));
+        printPDF(bill);
+        cart = []; updateCartBadge(); renderCart();
+    }
+
+    function printPDF(bill) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Premium Header
+        doc.setFillColor(15, 23, 42); // Navy Black
+        doc.rect(0, 0, 210, 50, 'F');
+        
+        doc.setTextColor(59, 130, 246); // Electric Blue
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(26);
+        doc.text("BHAGAT ELECTRICALS", 15, 25);
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(9);
+        doc.text("Tilli/Mohagaon, Gondia 441807 | Mob: 8459718594", 15, 33);
+        doc.text("Email: bhagatelectricals13@gmail.com", 15, 38);
+        doc.text("Website: https://voltcare-solutions-s81x.bolt.host/", 15, 43);
+
+        // Client Details
+        doc.setTextColor(40, 40, 40);
+        doc.setFontSize(10);
+        doc.text("INVOICE TO:", 15, 60);
+        doc.setFontSize(12);
+        doc.text(bill.customer.toUpperCase(), 15, 67);
+        
+        doc.setFontSize(10);
+        doc.text(`Invoice No: ${bill.id}`, 140, 60);
+        doc.text(`Issue Date: ${bill.date}`, 140, 67);
+
+        // Table
+        const rows = bill.items.map((i, index) => [index + 1, i.name, i.cat, `Rs. ${i.price}`, i.qty, `Rs. ${i.price * i.qty}`]);
+        doc.autoTable({
+            startY: 75,
+            head: [['No.', 'Item Description', 'Category', 'Unit Price', 'Qty', 'Subtotal']],
+            body: rows,
+            headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
+            theme: 'striped'
+        });
+
+        const finalY = doc.lastAutoTable.finalY;
+        
+        // Total Box
+        doc.setFillColor(240, 240, 240);
+        doc.rect(130, finalY + 5, 65, 15, 'F');
+        doc.setFontSize(12);
+        doc.text(`GRAND TOTAL: Rs. ${bill.total}/-`, 135, finalY + 15);
+
+        // QR Code & Sign
+        const qrCanvas = document.getElementById("qrcode-hidden").querySelector("canvas");
+        doc.addImage(qrCanvas.toDataURL("image/png"), 'PNG', 15, finalY + 10, 35, 35);
+        doc.setFontSize(8);
+        doc.text("Scan to Visit Catalog", 15, finalY + 50);
+
+        doc.setFontSize(11);
+        doc.text("Authorized Signatory", 145, finalY + 40);
+        doc.setFont("helvetica", "bold");
+        doc.text("Tejesh Bhagat", 145, finalY + 50);
+
+        doc.save(`${bill.id}_${bill.customer}.pdf`);
+    }
+
+    function renderAdminList() {
+        const list = document.getElementById('admin-list');
+        list.innerHTML = products.map(p => `
+            <div style="background: #1e293b; padding: 12px; border-radius: 10px; margin-bottom: 5px; display: flex; justify-content: space-between;">
+                <span>${p.name} - ₹${p.price}</span>
+                <button onclick="deleteProd(${p.id})" style="background:none; border:none; color:#ef4444;">Delete</button>
+            </div>
+        `).join('');
+    }
+
+    function deleteProd(id) {
+        products = products.filter(x => x.id !== id);
+        localStorage.setItem('bhagat_db_v4', JSON.stringify(products));
+        renderAdminList();
+    }
+
+    function renderHistory() {
+        const hist = document.getElementById('bill-history');
+        hist.innerHTML = bills.map(b => `
+            <div style="background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <b>${b.customer}</b>
+                    <span style="color: var(--neon-green);">₹${b.total}</span>
+                </div>
+                <small style="color: var(--text-dim);">${b.date}</small>
+                <button onclick='printPDF(${JSON.stringify(b)})' style="background:none; border:none; color:var(--electric-blue); font-weight:bold; margin-top:10px; display:block;">Download PDF</button>
+            </div>
+        `).join('');
+    }
+
+    renderProducts();
+</script>
+</body>
+</html>
