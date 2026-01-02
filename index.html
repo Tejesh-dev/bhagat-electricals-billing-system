@@ -12,42 +12,27 @@
     <style>
         :root { --bg: #05070a; --panel: #111827; --electric: #3b82f6; --plumbing: #10b981; --text: #f8fafc; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 110px; overflow-x: hidden; }
-        
         header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--electric); position: sticky; top:0; z-index: 1000; }
         header h1 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--electric); margin: 0; letter-spacing: 1px; }
-
-        /* Search & Navigation */
         .top-tools { padding: 15px; position: sticky; top: 65px; background: var(--bg); z-index: 900; }
         .search-input { width: 100%; padding: 14px 15px; background: var(--panel); border: 1px solid #1f2937; color: white; border-radius: 12px; outline: none; }
-        
-        .cat-heading { 
-            background: linear-gradient(90deg, #1e293b, transparent); padding: 12px 15px; 
-            margin: 25px 0 10px 0; border-left: 5px solid var(--electric); font-weight: 900; 
-            font-size: 14px; color: var(--electric); text-transform: uppercase;
-        }
+        .cat-heading { background: linear-gradient(90deg, #1e293b, transparent); padding: 12px 15px; margin: 25px 0 10px 0; border-left: 5px solid var(--electric); font-weight: 900; font-size: 14px; color: var(--electric); text-transform: uppercase; }
         .plumbing-style { border-left-color: var(--plumbing); color: var(--plumbing); }
-
-        /* Product Cards */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
-        .card { background: var(--panel); border-radius: 16px; border: 1px solid #1f2937; overflow: hidden; position: relative; }
+        .card { background: var(--panel); border-radius: 16px; border: 1px solid #1f2937; overflow: hidden; }
         .card img { width: 100%; height: 100px; object-fit: cover; background: #000; }
         .card-info { padding: 12px; }
         .card-name { font-size: 12px; font-weight: 500; height: 32px; overflow: hidden; margin-bottom: 5px; }
         .card-price { color: var(--plumbing); font-weight: 800; font-size: 15px; }
-        
-        /* Nav Bar */
         .nav-bar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 94%; background: rgba(17, 24, 39, 0.96); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 15px 0; border-radius: 24px; border: 1px solid #374151; z-index: 2000; }
         .nav-item { text-align: center; color: #94a3b8; cursor: pointer; flex:1; font-size: 10px; position: relative; }
         .nav-item.active { color: var(--electric); }
         .nav-item i { font-size: 22px; display: block; margin-bottom: 5px; }
         .badge { position: absolute; top: -10px; right: 20%; background: #ef4444; color: white; font-size: 10px; padding: 2px 7px; border-radius: 50%; font-weight: bold; }
-
-        /* Admin/Edit Components */
         .admin-row { background: var(--panel); padding: 15px; margin: 10px 15px; border-radius: 12px; border: 1px solid #1f2937; }
         .edit-input { background: #000; border: 1px solid #374151; color: var(--plumbing); padding: 5px; border-radius: 5px; width: 80px; }
         .btn { border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-add { background: var(--electric); color: white; width: 100%; margin-top: 10px; font-size: 11px; }
-
         .page { display: none; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -59,7 +44,7 @@
 </header>
 
 <div class="top-tools">
-    <input type="text" id="masterSearch" class="search-input" placeholder="Search item or size..." onkeyup="runGlobalSearch()">
+    <input type="text" id="masterSearch" class="search-input" placeholder="Search Switch, Wire, or Plumbing..." onkeyup="runGlobalSearch()">
 </div>
 
 <div id="electric-page" class="page" style="display: block;"></div>
@@ -68,59 +53,73 @@
 <div id="cart-page" class="page">
     <div style="padding: 20px;">
         <h2 style="color: var(--electric)">Billing Portal</h2>
-        <input type="text" id="custName" class="search-input" placeholder="Enter Site / Customer Name" style="margin-bottom: 15px;">
+        <input type="text" id="custName" class="search-input" placeholder="Customer / Site Name" style="margin-bottom: 15px;">
         <div id="cart-list"></div>
-        <div style="background: var(--panel); padding: 20px; border-radius: 15px; margin-top: 20px; border-top: 2px solid var(--plumbing); display: flex; justify-content: space-between;">
-            <span>Valuation:</span>
+        <div style="background: var(--panel); padding: 20px; border-radius: 15px; margin-top: 20px; display: flex; justify-content: space-between;">
+            <span>Total Value:</span>
             <span style="color: var(--plumbing); font-size: 24px; font-weight: 900;">₹<span id="total-amount">0</span></span>
         </div>
-        <button class="btn" style="background: var(--plumbing); color: #000; width: 100%; height: 60px; margin-top: 20px; font-size: 18px;" onclick="generatePDF()">GENERATE FINAL BILL</button>
+        <button class="btn" style="background: var(--plumbing); color: #000; width: 100%; height: 60px; margin-top: 20px; font-size: 18px;" onclick="generatePDF()">DOWNLOAD PDF</button>
     </div>
 </div>
 
 <div id="admin-page" class="page">
     <div style="padding: 20px;">
-        <h2>Inventory Master Control</h2>
-        <p style="color:#64748b; font-size: 12px;">Edit prices and image URLs below. Changes save instantly.</p>
+        <h2>Price & Image Master</h2>
         <div id="admin-list"></div>
     </div>
 </div>
 
 <nav class="nav-bar">
-    <div class="nav-item active" onclick="switchPage('electric-page', this)"><i class="fa fa-bolt"></i>Electric</div>
-    <div class="nav-item" onclick="switchPage('plumbing-page', this)"><i class="fa fa-faucet"></i>Plumbing</div>
-    <div class="nav-item" onclick="switchPage('cart-page', this)">
-        <span class="badge" id="cart-badge" style="display:none">0</span>
-        <i class="fa fa-file-invoice"></i>Cart
-    </div>
-    <div class="nav-item" onclick="switchPage('admin-page', this)"><i class="fa fa-tools"></i>Admin</div>
+    <div class="nav-item active" onclick="switchPage('electric-page', this)"><i class="fa fa-plug"></i>Electric</div>
+    <div class="nav-item" onclick="switchPage('plumbing-page', this)"><i class="fa fa-faucet-drip"></i>Plumbing</div>
+    <div class="nav-item" onclick="switchPage('cart-page', this)"><span class="badge" id="cart-badge" style="display:none">0</span><i class="fa fa-file-invoice"></i>Cart</div>
+    <div class="nav-item" onclick="switchPage('admin-page', this)"><i class="fa fa-cog"></i>Admin</div>
 </nav>
 
 <script>
-// --- MASS DATA LOADING ---
 const baseProducts = [
-    // ELECTRICAL - WIRES (Complete Colors/Sizes)
+    // --- WIRES (1mm to 4mm) ---
     ...['1.0', '1.5', '2.5', '4.0'].flatMap(size => 
         ['Red', 'Blue', 'Yellow', 'Black', 'Green', 'White'].map(color => ({
             id: `W-${size}-${color}`, name: `${size} Sq mm ${color} Electrical Wire`, cat: 'Electric', group: 'Wires & Cables', price: 0, img: ''
         }))
     ),
-    // MODULAR SWITCHES & SOCKETS
-    { id: 'S1', name: "6 Amp 1 Way Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'S2', name: "Bell Push Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'S3', name: "16 Amp 1 Way Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'SK1', name: "6 Amp 2 Pin Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
-    { id: 'SK2', name: "16 Amp 3 Pin Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
+    // --- MODULAR RANGE ---
+    { id: 'E1', name: "6 Amp Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
+    { id: 'E2', name: "16 Amp Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
+    { id: 'E3', name: "2 Way Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
+    { id: 'E4', name: "Bell Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
+    { id: 'E5', name: "6 Amp Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
+    { id: 'E6', name: "16 Amp Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
     
-    // PLUMBING - PVC (Sizes ½ to 2 Inch)
-    ...['½', '¾', '1', '1¼', '1½', '2'].flatMap(size => ([
-        { id: `P-ELB-${size}`, name: `${size} Inch PVC 90 Degree Elbow`, cat: 'Plumbing', group: 'PVC Elbows', price: 0, img: '' },
-        { id: `P-TEE-${size}`, name: `${size} Inch PVC Equal Tee`, cat: 'Plumbing', group: 'PVC Tees', price: 0, img: '' },
-        { id: `C-ELB-${size}`, name: `${size} Inch CPVC 90 Degree Elbow`, cat: 'Plumbing', group: 'CPVC Plumbing Products', price: 0, img: '' }
-    ]))
+    // --- PLATES ---
+    { id: 'P1', name: "12 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P2', name: "8 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P3', name: "6 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P4', name: "4 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P5', name: "3 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P6', name: "Junction Box Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+    { id: 'P7', name: "Dummy Module", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
+
+    // --- POWER & SAFETY ---
+    { id: 'PS1', name: "MCB 16 Amp", cat: 'Electric', group: 'Safety & MCB', price: 0, img: '' },
+    { id: 'PS2', name: "Isolator 32 Amp", cat: 'Electric', group: 'Safety & MCB', price: 0, img: '' },
+
+    // --- ACCESSORIES ---
+    { id: 'AC1', name: "Fan Regulator", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+    { id: 'AC2', name: "Angle Holder", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+    { id: 'AC3', name: "Silingrose", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+    { id: 'AC4', name: "Electrical Bell", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+    { id: 'AC5', name: "Cable Ties (Pkt)", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+    { id: 'AC6', name: "Electrical Insulation Tape", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
+
+    // --- PLUMBING (Standard Sample Sizes) ---
+    { id: 'PL1', name: "1 Inch PVC 90 Degree Elbow", cat: 'Plumbing', group: 'PVC Elbows', price: 0, img: '' },
+    { id: 'PL2', name: "¾ Inch CPVC Equal Tee", cat: 'Plumbing', group: 'CPVC Products', price: 0, img: '' }
 ];
 
-let products = JSON.parse(localStorage.getItem('bhagat_erp_db')) || baseProducts;
+let products = JSON.parse(localStorage.getItem('bhagat_final_db')) || baseProducts;
 let cart = [];
 
 function switchPage(id, el) {
@@ -136,113 +135,98 @@ function renderCatalog(cat, targetId) {
     const container = document.getElementById(targetId);
     const search = document.getElementById('masterSearch').value.toLowerCase();
     container.innerHTML = '';
-
     const filtered = products.filter(p => p.cat === cat && p.name.toLowerCase().includes(search));
     const groups = [...new Set(filtered.map(p => p.group))];
 
     groups.forEach(group => {
         container.innerHTML += `<div class="cat-heading ${cat==='Plumbing'?'plumbing-style':''}">${group}</div>`;
-        const grid = document.createElement('div');
-        grid.className = 'grid';
+        const grid = document.createElement('div'); grid.className = 'grid';
         filtered.filter(p => p.group === group).forEach(p => {
             grid.innerHTML += `
                 <div class="card">
-                    <img src="${p.img || 'https://via.placeholder.com/200?text=Item'}">
+                    <img src="${p.img || 'https://via.placeholder.com/200?text=Electrical'}">
                     <div class="card-info">
                         <div class="card-name">${p.name}</div>
                         <div class="card-price">₹${p.price}</div>
-                        <button class="btn btn-add" onclick="addToCart('${p.id}')">ADD TO LIST</button>
+                        <button class="btn btn-add" onclick="addToCart('${p.id}')">ADD</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
         container.appendChild(grid);
     });
 }
 
-function runGlobalSearch() {
-    renderCatalog('Electric', 'electric-page');
-    renderCatalog('Plumbing', 'plumbing-page');
-}
+function runGlobalSearch() { renderCatalog('Electric', 'electric-page'); renderCatalog('Plumbing', 'plumbing-page'); }
 
 function addToCart(id) {
     const p = products.find(x => x.id === id);
     const inCart = cart.find(x => x.id === id);
     if(inCart) inCart.qty++; else cart.push({...p, qty: 1});
+    updateBadge();
+}
+
+function updateBadge() {
     const b = document.getElementById('cart-badge');
     b.innerText = cart.reduce((s,i)=>s+i.qty,0);
-    b.style.display = 'block';
+    b.style.display = cart.length > 0 ? 'block' : 'none';
 }
 
 function renderCart() {
-    const list = document.getElementById('cart-list');
-    list.innerHTML = '';
+    const list = document.getElementById('cart-list'); list.innerHTML = '';
     let total = 0;
     cart.forEach(item => {
         total += item.price * item.qty;
-        list.innerHTML += `
-            <div class="admin-row">
-                <div style="flex:1"><b>${item.name}</b><br><small>Rate: ₹${item.price}</small></div>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <button onclick="updateQty('${item.id}', -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button onclick="updateQty('${item.id}', 1)">+</button>
-                </div>
-            </div>
-        `;
+        list.innerHTML += `<div class="admin-row" style="display:flex; justify-content:space-between">
+            <div><b>${item.name}</b><br><small>₹${item.price}</small></div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button onclick="updateQty('${item.id}',-1)">-</button><span>${item.qty}</span><button onclick="updateQty('${item.id}',1)">+</button>
+            </div></div>`;
     });
     document.getElementById('total-amount').innerText = total;
 }
 
 function updateQty(id, d) {
-    const item = cart.find(x => x.id === id);
-    item.qty += d;
+    const item = cart.find(x => x.id === id); item.qty += d;
     if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
-    renderCart();
+    renderCart(); updateBadge();
 }
 
 function renderAdmin() {
     const list = document.getElementById('admin-list');
     list.innerHTML = products.map(p => `
-        <div class="admin-row" style="flex-direction:column; gap:10px;">
+        <div class="admin-row" style="display:flex; flex-direction:column; gap:10px;">
             <div style="display:flex; justify-content:space-between">
-                <div style="font-size:12px; font-weight:bold">${p.name}</div>
-                <input type="number" value="${p.price}" class="edit-input" placeholder="Price" onchange="updateMaster('${p.id}', 'price', this.value)">
+                <span style="font-size:12px; font-weight:bold">${p.name}</span>
+                <input type="number" value="${p.price}" class="edit-input" onchange="updateMaster('${p.id}', 'price', this.value)">
             </div>
-            <input type="text" value="${p.img}" class="search-input" style="padding:8px; font-size:11px;" placeholder="Paste Image URL here" onchange="updateMaster('${p.id}', 'img', this.value)">
-        </div>
-    `).join('');
+            <input type="text" value="${p.img}" class="search-input" style="padding:8px; font-size:11px;" placeholder="Image URL" onchange="updateMaster('${p.id}', 'img', this.value)">
+        </div>`).join('');
 }
 
 function updateMaster(id, key, val) {
     const p = products.find(x => x.id === id);
     p[key] = key === 'price' ? parseFloat(val) || 0 : val;
-    localStorage.setItem('bhagat_erp_db', JSON.stringify(products));
+    localStorage.setItem('bhagat_final_db', JSON.stringify(products));
 }
 
 function generatePDF() {
     const name = document.getElementById('custName').value || "Customer";
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
+    const { jsPDF } = window.jspdf; const doc = new jsPDF();
     doc.setFillColor(5, 7, 10); doc.rect(0, 0, 210, 40, 'F');
     doc.setTextColor(59, 130, 246); doc.setFontSize(22); doc.text("BHAGAT ELECTRICALS", 15, 20);
-    doc.setTextColor(255, 255, 255); doc.setFontSize(10); doc.text(`Material List for: ${name}`, 15, 30);
-
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10); doc.text(`Material List: ${name}`, 15, 30);
     let y = 50;
     ['Electric', 'Plumbing'].forEach(cat => {
         const items = cart.filter(i => i.cat === cat);
         if(items.length > 0) {
-            doc.setTextColor(0); doc.setFontSize(12); doc.text(`${cat.toUpperCase()} MATERIALS`, 15, y);
+            doc.setTextColor(0); doc.setFontSize(12); doc.text(cat.toUpperCase(), 15, y);
             const rows = items.map((i, idx) => [idx+1, i.name, i.price, i.qty, i.price*i.qty]);
-            doc.autoTable({ startY: y+5, head: [['#', 'Description', 'Rate', 'Qty', 'Total']], body: rows, headStyles: {fillColor: cat==='Electric'?[59, 130, 246]:[16, 185, 129]} });
+            doc.autoTable({ startY: y+5, head: [['#', 'Item', 'Rate', 'Qty', 'Total']], body: rows, headStyles: {fillColor: cat==='Electric'?[59,130,246]:[16,185,129]} });
             y = doc.lastAutoTable.finalY + 15;
         }
     });
     doc.save(`Bhagat_${name}.pdf`);
 }
-
-// Startup
 runGlobalSearch();
 </script>
 </body>
