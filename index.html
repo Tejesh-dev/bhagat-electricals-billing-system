@@ -1,233 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhagat Electricals | Master ERP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <title>VoltCare Solutions | Enterprise ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Orbitron:wght@700&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        :root { --bg: #05070a; --panel: #111827; --electric: #3b82f6; --plumbing: #10b981; --text: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 110px; overflow-x: hidden; }
-        header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--electric); position: sticky; top:0; z-index: 1000; }
-        header h1 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--electric); margin: 0; letter-spacing: 1px; }
-        .top-tools { padding: 15px; position: sticky; top: 65px; background: var(--bg); z-index: 900; }
-        .search-input { width: 100%; padding: 14px 15px; background: var(--panel); border: 1px solid #1f2937; color: white; border-radius: 12px; outline: none; }
-        .cat-heading { background: linear-gradient(90deg, #1e293b, transparent); padding: 12px 15px; margin: 25px 0 10px 0; border-left: 5px solid var(--electric); font-weight: 900; font-size: 14px; color: var(--electric); text-transform: uppercase; }
-        .plumbing-style { border-left-color: var(--plumbing); color: var(--plumbing); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
-        .card { background: var(--panel); border-radius: 16px; border: 1px solid #1f2937; overflow: hidden; }
-        .card img { width: 100%; height: 100px; object-fit: cover; background: #000; }
-        .card-info { padding: 12px; }
-        .card-name { font-size: 12px; font-weight: 500; height: 32px; overflow: hidden; margin-bottom: 5px; }
-        .card-price { color: var(--plumbing); font-weight: 800; font-size: 15px; }
-        .nav-bar { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 94%; background: rgba(17, 24, 39, 0.96); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 15px 0; border-radius: 24px; border: 1px solid #374151; z-index: 2000; }
-        .nav-item { text-align: center; color: #94a3b8; cursor: pointer; flex:1; font-size: 10px; position: relative; }
-        .nav-item.active { color: var(--electric); }
-        .nav-item i { font-size: 22px; display: block; margin-bottom: 5px; }
-        .badge { position: absolute; top: -10px; right: 20%; background: #ef4444; color: white; font-size: 10px; padding: 2px 7px; border-radius: 50%; font-weight: bold; }
-        .admin-row { background: var(--panel); padding: 15px; margin: 10px 15px; border-radius: 12px; border: 1px solid #1f2937; }
-        .edit-input { background: #000; border: 1px solid #374151; color: var(--plumbing); padding: 5px; border-radius: 5px; width: 80px; }
-        .btn { border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-add { background: var(--electric); color: white; width: 100%; margin-top: 10px; font-size: 11px; }
-        .page { display: none; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        :root {
+            --midnight: #0f172a;
+            --volt-blue: #2563eb;
+            --success-green: #10b981;
+            /* Premium Green requested */
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-light);
+            padding-bottom: 90px;
+        }
+
+        /* Premium Header Styling */
+        .premium-header {
+            background: #fff;
+            border-bottom: 2px solid var(--midnight);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--midnight);
+        }
+
+        .brand-text span {
+            color: var(--volt-blue);
+        }
+
+        /* Responsive Mobile Grid (2 per row) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 10px;
+        }
+
+        .p-card {
+            background: #fff;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .p-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .p-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            height: 38px;
+            overflow: hidden;
+            margin-bottom: 5px;
+            color: var(--midnight);
+        }
+
+        /* Price & Add Button Row */
+        .p-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .p-price {
+            font-weight: 800;
+            color: var(--volt-blue);
+            font-size: 0.95rem;
+        }
+
+        .btn-add-item {
+            background: var(--success-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        .section-header {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--midnight);
+            padding: 20px 10px 5px;
+            border-bottom: 2px solid var(--volt-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Bottom Menu Navigation */
+        .dock {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 2000;
+        }
+
+        .dock-item {
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            position: relative;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .dock-item i {
+            font-size: 1.4rem;
+            display: block;
+        }
+
+        .dock-item span {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .dock-item.active {
+            color: var(--volt-blue);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: 25%;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: 800;
+        }
+
+        /* Table & Inputs */
+        .bill-table {
+            width: 100%;
+            font-size: 0.85rem;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bill-table th {
+            background: var(--midnight);
+            color: #fff;
+            padding: 12px;
+        }
+
+        .input-inline {
+            width: 55px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .active-view {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Green Button Styles */
+        .btn-pay {
+            background-color: var(--success-green) !important;
+            color: white !important;
+            border: none;
+        }
+
+        .btn-admin-save {
+            background-color: var(--success-green) !important;
+            color: white !important;
+            border: none;
+            font-weight: 800;
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>BHAGAT ELECTRICALS</h1>
-</header>
-
-<div class="top-tools">
-    <input type="text" id="masterSearch" class="search-input" placeholder="Search Switch, Wire, or Plumbing..." onkeyup="runGlobalSearch()">
-</div>
-
-<div id="electric-page" class="page" style="display: block;"></div>
-<div id="plumbing-page" class="page"></div>
-
-<div id="cart-page" class="page">
-    <div style="padding: 20px;">
-        <h2 style="color: var(--electric)">Billing Portal</h2>
-        <input type="text" id="custName" class="search-input" placeholder="Customer / Site Name" style="margin-bottom: 15px;">
-        <div id="cart-list"></div>
-        <div style="background: var(--panel); padding: 20px; border-radius: 15px; margin-top: 20px; display: flex; justify-content: space-between;">
-            <span>Total Value:</span>
-            <span style="color: var(--plumbing); font-size: 24px; font-weight: 900;">₹<span id="total-amount">0</span></span>
+    <header class="premium-header d-flex justify-content-between align-items-center">
+        <div class="brand-text">Voltcare <span>Solutions</span></div>
+        <div class="text-end" style="font-size: 10px; font-weight: 700;">
+            <i class="bi bi-geo-alt-fill text-danger"></i> Chhatrapati Square, Nagpur<br>
+            <a href="https://voltcaresolutions.com" target="_blank" class="text-decoration-none text-primary">9970174508
+                | Website</a>
         </div>
-        <button class="btn" style="background: var(--plumbing); color: #000; width: 100%; height: 60px; margin-top: 20px; font-size: 18px;" onclick="generatePDF()">DOWNLOAD PDF</button>
+    </header>
+
+    <div class="p-2 bg-white border-bottom">
+        <div class="input-group">
+            <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+            <input type="text" id="gSearch" class="form-control border-0 bg-light" placeholder="Search product name..."
+                onkeyup="search()">
+        </div>
     </div>
-</div>
 
-<div id="admin-page" class="page">
-    <div style="padding: 20px;">
-        <h2>Price & Image Master</h2>
-        <div id="admin-list"></div>
+    <div id="view-electric" class="view active-view p-2">
+        <div class="section-header"><i class="bi bi-lightning-charge-fill"></i> Wires & Cables</div>
+        <div class="product-grid" id="grid-wires"></div>
+        <div class="section-header"><i class="bi bi-toggle-on"></i> Modular Switches</div>
+        <div class="product-grid" id="grid-switches"></div>
+        <div class="section-header"><i class="bi bi-outlet"></i> Sockets & Dimmers</div>
+        <div class="product-grid" id="grid-sockets"></div>
     </div>
-</div>
 
-<nav class="nav-bar">
-    <div class="nav-item active" onclick="switchPage('electric-page', this)"><i class="fa fa-plug"></i>Electric</div>
-    <div class="nav-item" onclick="switchPage('plumbing-page', this)"><i class="fa fa-faucet-drip"></i>Plumbing</div>
-    <div class="nav-item" onclick="switchPage('cart-page', this)"><span class="badge" id="cart-badge" style="display:none">0</span><i class="fa fa-file-invoice"></i>Cart</div>
-    <div class="nav-item" onclick="switchPage('admin-page', this)"><i class="fa fa-cog"></i>Admin</div>
-</nav>
+    <div id="view-plumbing" class="view p-2">
+        <div class="section-header"><i class="bi bi-droplet-fill"></i> CPVC Pipes & Fittings</div>
+        <div class="product-grid" id="grid-pipes"></div>
+    </div>
 
-<script>
-const baseProducts = [
-    // --- WIRES (1mm to 4mm) ---
-    ...['1.0', '1.5', '2.5', '4.0'].flatMap(size => 
-        ['Red', 'Blue', 'Yellow', 'Black', 'Green', 'White'].map(color => ({
-            id: `W-${size}-${color}`, name: `${size} Sq mm ${color} Electrical Wire`, cat: 'Electric', group: 'Wires & Cables', price: 0, img: ''
-        }))
-    ),
-    // --- MODULAR RANGE ---
-    { id: 'E1', name: "6 Amp Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'E2', name: "16 Amp Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'E3', name: "2 Way Modular Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'E4', name: "Bell Switch", cat: 'Electric', group: 'Modular Switches', price: 0, img: '' },
-    { id: 'E5', name: "6 Amp Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
-    { id: 'E6', name: "16 Amp Modular Socket", cat: 'Electric', group: 'Modular Sockets', price: 0, img: '' },
-    
-    // --- PLATES ---
-    { id: 'P1', name: "12 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P2', name: "8 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P3', name: "6 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P4', name: "4 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P5', name: "3 Module Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P6', name: "Junction Box Plate", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-    { id: 'P7', name: "Dummy Module", cat: 'Electric', group: 'Modular Plates', price: 0, img: '' },
-
-    // --- POWER & SAFETY ---
-    { id: 'PS1', name: "MCB 16 Amp", cat: 'Electric', group: 'Safety & MCB', price: 0, img: '' },
-    { id: 'PS2', name: "Isolator 32 Amp", cat: 'Electric', group: 'Safety & MCB', price: 0, img: '' },
-
-    // --- ACCESSORIES ---
-    { id: 'AC1', name: "Fan Regulator", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-    { id: 'AC2', name: "Angle Holder", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-    { id: 'AC3', name: "Silingrose", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-    { id: 'AC4', name: "Electrical Bell", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-    { id: 'AC5', name: "Cable Ties (Pkt)", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-    { id: 'AC6', name: "Electrical Insulation Tape", cat: 'Electric', group: 'Accessories', price: 0, img: '' },
-
-    // --- PLUMBING (Standard Sample Sizes) ---
-    { id: 'PL1', name: "1 Inch PVC 90 Degree Elbow", cat: 'Plumbing', group: 'PVC Elbows', price: 0, img: '' },
-    { id: 'PL2', name: "¾ Inch CPVC Equal Tee", cat: 'Plumbing', group: 'CPVC Products', price: 0, img: '' }
-];
-
-let products = JSON.parse(localStorage.getItem('bhagat_final_db')) || baseProducts;
-let cart = [];
-
-function switchPage(id, el) {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    if(id === 'admin-page') renderAdmin();
-    if(id === 'cart-page') renderCart();
-}
-
-function renderCatalog(cat, targetId) {
-    const container = document.getElementById(targetId);
-    const search = document.getElementById('masterSearch').value.toLowerCase();
-    container.innerHTML = '';
-    const filtered = products.filter(p => p.cat === cat && p.name.toLowerCase().includes(search));
-    const groups = [...new Set(filtered.map(p => p.group))];
-
-    groups.forEach(group => {
-        container.innerHTML += `<div class="cat-heading ${cat==='Plumbing'?'plumbing-style':''}">${group}</div>`;
-        const grid = document.createElement('div'); grid.className = 'grid';
-        filtered.filter(p => p.group === group).forEach(p => {
-            grid.innerHTML += `
-                <div class="card">
-                    <img src="${p.img || 'https://via.placeholder.com/200?text=Electrical'}">
-                    <div class="card-info">
-                        <div class="card-name">${p.name}</div>
-                        <div class="card-price">₹${p.price}</div>
-                        <button class="btn btn-add" onclick="addToCart('${p.id}')">ADD</button>
-                    </div>
-                </div>`;
-        });
-        container.appendChild(grid);
-    });
-}
-
-function runGlobalSearch() { renderCatalog('Electric', 'electric-page'); renderCatalog('Plumbing', 'plumbing-page'); }
-
-function addToCart(id) {
-    const p = products.find(x => x.id === id);
-    const inCart = cart.find(x => x.id === id);
-    if(inCart) inCart.qty++; else cart.push({...p, qty: 1});
-    updateBadge();
-}
-
-function updateBadge() {
-    const b = document.getElementById('cart-badge');
-    b.innerText = cart.reduce((s,i)=>s+i.qty,0);
-    b.style.display = cart.length > 0 ? 'block' : 'none';
-}
-
-function renderCart() {
-    const list = document.getElementById('cart-list'); list.innerHTML = '';
-    let total = 0;
-    cart.forEach(item => {
-        total += item.price * item.qty;
-        list.innerHTML += `<div class="admin-row" style="display:flex; justify-content:space-between">
-            <div><b>${item.name}</b><br><small>₹${item.price}</small></div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <button onclick="updateQty('${item.id}',-1)">-</button><span>${item.qty}</span><button onclick="updateQty('${item.id}',1)">+</button>
-            </div></div>`;
-    });
-    document.getElementById('total-amount').innerText = total;
-}
-
-function updateQty(id, d) {
-    const item = cart.find(x => x.id === id); item.qty += d;
-    if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
-    renderCart(); updateBadge();
-}
-
-function renderAdmin() {
-    const list = document.getElementById('admin-list');
-    list.innerHTML = products.map(p => `
-        <div class="admin-row" style="display:flex; flex-direction:column; gap:10px;">
-            <div style="display:flex; justify-content:space-between">
-                <span style="font-size:12px; font-weight:bold">${p.name}</span>
-                <input type="number" value="${p.price}" class="edit-input" onchange="updateMaster('${p.id}', 'price', this.value)">
+    <div id="view-cart" class="view p-3">
+        <div class="card border-0 shadow-sm p-3 mb-3">
+            <h5 class="fw-bold"><i class="bi bi-receipt-cutoff"></i> Quotation Preview</h5>
+            <input type="text" id="custName" class="form-control mb-3" placeholder="Customer Name">
+            <div class="table-responsive">
+                <table class="bill-table table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items"></tbody>
+                </table>
             </div>
-            <input type="text" value="${p.img}" class="search-input" style="padding:8px; font-size:11px;" placeholder="Image URL" onchange="updateMaster('${p.id}', 'img', this.value)">
-        </div>`).join('');
-}
+            <div class="d-flex justify-content-between fw-bold p-3 bg-light rounded mt-3">
+                <span>TOTAL PAYABLE</span>
+                <span class="text-primary fs-5">₹<span id="grand-total">0</span></span>
+            </div>
+            <button class="btn btn-pay w-100 py-3 mt-3 fw-bold rounded-3 shadow-sm" onclick="generatePDF()">
+                <i class="bi bi-file-earmark-pdf-fill"></i> DOWNLOAD FINAL BILL
+            </button>
+        </div>
+    </div>
 
-function updateMaster(id, key, val) {
-    const p = products.find(x => x.id === id);
-    p[key] = key === 'price' ? parseFloat(val) || 0 : val;
-    localStorage.setItem('bhagat_final_db', JSON.stringify(products));
-}
+    <div id="view-history" class="view p-3">
+        <h5 class="fw-bold mb-3">Past Quotations</h5>
+        <div id="history-list"></div>
+    </div>
 
-function generatePDF() {
-    const name = document.getElementById('custName').value || "Customer";
-    const { jsPDF } = window.jspdf; const doc = new jsPDF();
-    doc.setFillColor(5, 7, 10); doc.rect(0, 0, 210, 40, 'F');
-    doc.setTextColor(59, 130, 246); doc.setFontSize(22); doc.text("BHAGAT ELECTRICALS", 15, 20);
-    doc.setTextColor(255, 255, 255); doc.setFontSize(10); doc.text(`Material List: ${name}`, 15, 30);
-    let y = 50;
-    ['Electric', 'Plumbing'].forEach(cat => {
-        const items = cart.filter(i => i.cat === cat);
-        if(items.length > 0) {
-            doc.setTextColor(0); doc.setFontSize(12); doc.text(cat.toUpperCase(), 15, y);
-            const rows = items.map((i, idx) => [idx+1, i.name, i.price, i.qty, i.price*i.qty]);
-            doc.autoTable({ startY: y+5, head: [['#', 'Item', 'Rate', 'Qty', 'Total']], body: rows, headStyles: {fillColor: cat==='Electric'?[59,130,246]:[16,185,129]} });
-            y = doc.lastAutoTable.finalY + 15;
+    <div id="view-admin" class="view p-3">
+        <div class="card p-3 border-0 shadow-sm">
+            <h5 class="fw-bold mb-3">Add New Inventory Item</h5>
+            <input type="text" id="ad-name" class="form-control mb-2" placeholder="Product Name">
+            <input type="number" id="ad-price" class="form-control mb-2" placeholder="Price (₹)">
+            <input type="text" id="ad-img" class="form-control mb-2" placeholder="Image URL (Optional)">
+            <select id="ad-heading" class="form-select mb-2">
+                <option value="Wires">Wires</option>
+                <option value="Switches">Switches</option>
+                <option value="Sockets">Sockets</option>
+                <option value="Pipes">Pipes</option>
+            </select>
+            <select id="ad-cat" class="form-select mb-3">
+                <option value="Electric">Electric</option>
+                <option value="Plumbing">Plumbing</option>
+            </select>
+            <button class="btn btn-admin-save w-100 py-2 rounded-3" onclick="addItem()">
+                <i class="bi bi-plus-circle-fill"></i> ADD TO INVENTORY
+            </button>
+        </div>
+    </div>
+
+    <nav class="dock">
+        <div class="dock-item active" onclick="nav('view-electric', this)"><i
+                class="bi bi-lightning-charge"></i><span>Electric</span></div>
+        <div class="dock-item" onclick="nav('view-plumbing', this)"><i class="bi bi-droplet"></i><span>Plumb</span>
+        </div>
+        <div class="dock-item" onclick="nav('view-cart', this)">
+            <span class="cart-badge" id="c-dot">0</span>
+            <i class="bi bi-bag-check"></i><span>Cart</span>
+        </div>
+        <div class="dock-item" onclick="nav('view-history', this)"><i
+                class="bi bi-clock-history"></i><span>History</span></div>
+        <div class="dock-item" onclick="nav('view-admin', this)"><i class="bi bi-gear-fill"></i><span>Admin</span></div>
+    </nav>
+
+    <script>
+        /** * ==========================================
+         * 1. MASTER PRODUCT LIST (EDIT THIS AREA)
+         * To add more products manually, add them here.
+         * ==========================================
+         */
+        let inventory = JSON.parse(localStorage.getItem('vc_final_inv')) || [
+            { id: 1, cat: 'Electric', head: 'Wires', name: '1.0mm FR Red Wire 90m', price: 1250, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+            { id: 2, cat: 'Electric', head: 'Wires', name: '1.5mm FR Blue Wire 90m', price: 1800, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+            { id: 3, cat: 'Electric', head: 'Switches', name: '6A 1-Way Switch Modular', price: 65, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+            { id: 4, cat: 'Electric', head: 'Sockets', name: '16A Heavy Duty Socket', price: 210, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
+            { id: 5, cat: 'Plumbing', head: 'Pipes', name: '20mm CPVC Pipe 3m', price: 185, img: 'https://m.media-amazon.com/images/I/41-XNTo4zLL.jpg' }
+        ];
+
+        let cart = [];
+        let sales = JSON.parse(localStorage.getItem('vc_final_sales')) || [];
+
+        // Navigation Logic
+        function nav(id, el) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
+            document.getElementById(id).classList.add('active-view');
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+            if (id === 'view-electric' || id === 'view-plumbing') renderCatalog();
+            if (id === 'view-cart') renderCart();
+            if (id === 'view-history') renderHistory();
         }
-    });
-    doc.save(`Bhagat_${name}.pdf`);
-}
-runGlobalSearch();
-</script>
+
+        // Render Product Cards (Price and Add button in same row)
+        function renderCatalog() {
+            const sections = { 'grid-wires': 'Wires', 'grid-switches': 'Switches', 'grid-sockets': 'Sockets', 'grid-pipes': 'Pipes' };
+            for (let [divId, head] of Object.entries(sections)) {
+                const container = document.getElementById(divId);
+                if (container) {
+                    container.innerHTML = inventory.filter(p => p.head === head).map(p => `
+                    <div class="p-card">
+                        <img src="${p.img || 'https://via.placeholder.com/150?text=Product'}" alt="img">
+                        <div class="p-title">${p.name}</div>
+                        <div class="p-info-row">
+                            <div class="p-price">₹${p.price}</div>
+                            <button class="btn-add-item" onclick="addToCart(${p.id})">ADD</button>
+                        </div>
+                    </div>
+                `).join('');
+                }
+            }
+        }
+
+        // Add To Cart Functionality
+        function addToCart(id) {
+            const prod = inventory.find(x => x.id === id);
+            const item = cart.find(x => x.id === id);
+            if (item) {
+                item.qty++;
+            } else {
+                cart.push({ ...prod, qty: 1 });
+            }
+            document.getElementById('c-dot').innerText = cart.reduce((s, i) => s + i.qty, 0);
+
+            // Product Added Success Toast
+            Swal.fire({
+                toast: true, position: 'top-end', icon: 'success',
+                title: 'Product Added to Cart', showConfirmButton: false, timer: 1000
+            });
+        }
+
+        // Invoice Table Rendering
+        function renderCart() {
+            const body = document.getElementById('cart-items');
+            let total = 0;
+            body.innerHTML = cart.map((i, idx) => {
+                total += (i.qty * i.price);
+                return `<tr>
+                <td><small class="fw-bold text-dark">${i.name}</small></td>
+                <td><input type="number" class="input-inline" value="${i.qty}" onchange="updateQty(${idx}, this.value)"></td>
+                <td><input type="number" class="input-inline" value="${i.price}" onchange="updatePrice(${idx}, this.value)"></td>
+                <td class="fw-bold">₹${i.qty * i.price}</td>
+            </tr>`;
+            }).join('');
+            document.getElementById('grand-total').innerText = total;
+        }
+
+        function updateQty(idx, val) { cart[idx].qty = parseInt(val) || 0; renderCart(); }
+        function updatePrice(idx, val) { cart[idx].price = parseInt(val) || 0; renderCart(); }
+
+        // PDF Generation Logic
+        function generatePDF() {
+            if (cart.length === 0) return Swal.fire('Cart is empty', 'Add items before generating bill', 'warning');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('custName').value || "Valued Customer";
+
+            // Professional Navy Header Table
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255); doc.setFontSize(22); doc.text("VOLTCARE SOLUTIONS", 15, 25);
+            doc.setFontSize(9); doc.text("Chhatrapati Square, Nagpur | Phone: 9970174508", 15, 33);
+            doc.text("www.voltcaresolutions.com", 150, 33);
+
+            doc.setTextColor(0); doc.setFontSize(10);
+            doc.text(`Customer: ${name}`, 15, 55);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 160, 55);
+
+            doc.autoTable({
+                startY: 65,
+                head: [['Sr.', 'Description', 'Qty', 'Rate', 'Amount']],
+                body: cart.map((i, idx) => [idx + 1, i.name, i.qty, i.price, i.qty * i.price]),
+                theme: 'grid', headStyles: { fillColor: [15, 23, 42] }
+            });
+
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(14); doc.text(`TOTAL: Rs. ${document.getElementById('grand-total').innerText}`, 140, finalY);
+
+            // QR Code for WhatsApp
+            doc.addImage("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/919970174508", "PNG", 15, finalY, 30, 30);
+            doc.setFontSize(8); doc.setTextColor(150);
+            doc.text("This is an average amount of quotation. This is not fix prices.", 15, finalY + 45);
+
+            doc.save(`VoltCare_${name}.pdf`);
+
+            // Save to History
+            sales.push({ name, total: document.getElementById('grand-total').innerText, date: new Date().toLocaleDateString() });
+            localStorage.setItem('vc_final_sales', JSON.stringify(sales));
+        }
+
+        // Admin Panel: Add Item Logic
+        function addItem() {
+            const n = document.getElementById('ad-name').value;
+            const p = document.getElementById('ad-price').value;
+            const h = document.getElementById('ad-heading').value;
+            const c = document.getElementById('ad-cat').value;
+            const img = document.getElementById('ad-img').value;
+
+            if (n && p) {
+                inventory.push({ id: Date.now(), cat: c, head: h, name: n, price: parseInt(p), img: img });
+                localStorage.setItem('vc_final_inv', JSON.stringify(inventory));
+                renderCatalog();
+
+                // Pop up success message
+                Swal.fire('Added!', 'Product Added Successfully to Inventory', 'success');
+
+                // Clear inputs
+                document.getElementById('ad-name').value = '';
+                document.getElementById('ad-price').value = '';
+            } else {
+                Swal.fire('Error', 'Please enter Name and Price', 'error');
+            }
+        }
+
+        // Global Search Filter
+        function search() {
+            const q = document.getElementById('gSearch').value.toLowerCase();
+            document.querySelectorAll('.p-card').forEach(c => {
+                const name = c.querySelector('.p-title').innerText.toLowerCase();
+                c.style.display = name.includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        // Render Previous Generated Bills
+        function renderHistory() {
+            document.getElementById('history-list').innerHTML = sales.reverse().map(s => `
+            <div class="card p-3 mb-2 border-0 shadow-sm d-flex flex-row justify-content-between">
+                <div><b>${s.name}</b><br><small class="text-muted">${s.date}</small></div>
+                <div class="text-success fw-bold">₹${s.total}</div>
+            </div>
+        `).join('');
+        }
+
+        // Initial Render
+        renderCatalog();
+    </script>
 </body>
+
 </html>
