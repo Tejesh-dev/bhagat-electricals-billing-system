@@ -337,13 +337,59 @@
          * To add more products manually, add them here.
          * ==========================================
          */
-        let inventory = JSON.parse(localStorage.getItem('vc_final_inv')) || [
-            { id: 1, cat: 'Electric', head: 'Wires', name: '1.0mm FR Red Wire 90m', price: 1250, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
-            { id: 2, cat: 'Electric', head: 'Wires', name: '1.5mm FR Blue Wire 90m', price: 1800, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
-            { id: 3, cat: 'Electric', head: 'Switches', name: '6A 1-Way Switch Modular', price: 65, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
-            { id: 4, cat: 'Electric', head: 'Sockets', name: '16A Heavy Duty Socket', price: 210, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
-            { id: 5, cat: 'Plumbing', head: 'Pipes', name: '20mm CPVC Pipe 3m', price: 185, img: 'https://m.media-amazon.com/images/I/41-XNTo4zLL.jpg' }
-        ];
+       let inventory = JSON.parse(localStorage.getItem('vc_final_inv')) || [
+
+/* ===================== WIRES ===================== */
+{ id: 1, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm Red Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 2, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm Blue Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 3, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm Yellow Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 4, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm Black Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 5, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm Green Earthing Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 6, cat: 'Electric', head: 'Wires', name: '1.0 Sq mm White Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+
+{ id: 7, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm Red Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 8, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm Blue Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 9, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm Yellow Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 10, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm Black Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 11, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm Green Earthing Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 12, cat: 'Electric', head: 'Wires', name: '1.5 Sq mm White Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+
+{ id: 13, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm Red Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 14, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm Blue Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 15, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm Yellow Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 16, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm Black Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 17, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm Green Earthing Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 18, cat: 'Electric', head: 'Wires', name: '2.5 Sq mm White Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+
+{ id: 19, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm Red Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 20, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm Blue Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 21, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm Yellow Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 22, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm Black Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 23, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm Green Earthing Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+{ id: 24, cat: 'Electric', head: 'Wires', name: '4.0 Sq mm White Electrical Wire', price: null, img: 'https://m.media-amazon.com/images/I/71RAnV0l87L._SX522_.jpg' },
+
+/* ===================== SWITCHES ===================== */
+{ id: 25, cat: 'Electric', head: 'Switches', name: '6A 1 Way Switch', price: 60, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+{ id: 26, cat: 'Electric', head: 'Switches', name: '6A 2 Way Switch', price: 98, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+{ id: 27, cat: 'Electric', head: 'Switches', name: '6A Bell Push', price: 98, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+{ id: 28, cat: 'Electric', head: 'Switches', name: '16A 2 Way Switch', price: 147, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+{ id: 29, cat: 'Electric', head: 'Switches', name: '1 Module Blanking Plate', price: 20, img: 'https://m.media-amazon.com/images/I/41K1y3O3A7L.jpg' },
+
+/* ===================== SOCKETS ===================== */
+{ id: 30, cat: 'Electric', head: 'Sockets', name: '2 Pin Socket', price: 90, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
+{ id: 31, cat: 'Electric', head: 'Sockets', name: '6A Socket', price: 140, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
+{ id: 32, cat: 'Electric', head: 'Sockets', name: '3 Pin Socket', price: 108, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
+{ id: 33, cat: 'Electric', head: 'Sockets', name: '16A Socket', price: null, img: 'https://m.media-amazon.com/images/I/51n26vJ9nSL.jpg' },
+
+/* ===================== FERRULES ===================== */
+{ id: 34, cat: 'Electric', head: 'Ferrules', name: '1.0 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' },
+{ id: 35, cat: 'Electric', head: 'Ferrules', name: '1.5 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' },
+{ id: 36, cat: 'Electric', head: 'Ferrules', name: '2.5 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' },
+{ id: 37, cat: 'Electric', head: 'Ferrules', name: '4 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' },
+{ id: 38, cat: 'Electric', head: 'Ferrules', name: '6 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' },
+{ id: 39, cat: 'Electric', head: 'Ferrules', name: '8 mm Ferrules – Mixed Colours', price: null, img: 'https://m.media-amazon.com/images/I/61xGZ6n9ZSL.jpg' }
+
+];
 
         let cart = [];
         let sales = JSON.parse(localStorage.getItem('vc_final_sales')) || [];
